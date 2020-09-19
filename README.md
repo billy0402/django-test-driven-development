@@ -30,6 +30,18 @@ $ python manage.py test
 ![The TDD process with functional and unit tests](https://www.obeythetestinggoat.com/book/images/twp2_0404.png)
 
 ## 單元測試/編程週期
-1. 在終端機，執行單元測試，並查看它們失敗的原因
-2. 在編輯器，修改最少量的程式，來處理目前的測試失敗
-3. 重複做！
+1. (紅燈) 編寫失敗的單元測試
+2. (綠燈) 編寫最簡單的代碼使其通過 (作弊)
+3. (重構) 重構以獲取更有意義.更好的代碼
+    1. 消除重複
+    2. 三角關係 (編寫另一個測試)
+
+## 單元測試典型結構
+1. 設置 (Setup)
+2. 執行 (Exercise)
+3. 斷言 (Assert)
+    
+## Don’t Repeat Yourself (DRY)
+`不要寫出重複的程式`
+- 重複兩次 >> 可能重構，太早重構
+- 重複三次 >> 必須重構，立即重構

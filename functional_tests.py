@@ -20,6 +20,11 @@ class NewVisitorTest(unittest.TestCase):
         options.add_argument('-private')
         return webdriver.Firefox(options=options)
 
+    def check_for_row_in_list_table(self, row_text):
+        table = self.browser.find_element_by_id('list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn(row_text, [row.text for row in rows])
+
     def test_can_start_a_list_and_retrieve_it_later(self):
         # Edith 聽到一個很酷的新線上待辦事項 app
         # 她去查看它的首頁
@@ -45,23 +50,23 @@ class NewVisitorTest(unittest.TestCase):
         # "1. 購買孔雀羽毛"，一個待辦事項清單項目
         input_box.send_keys(Keys.ENTER)
         time.sleep(1)
-
-        table = self.browser.find_element_by_id('list_table')
-        rows = table.find_elements_by_tag_name('tr')
-        self.assertTrue(
-            any(row.text == '1: Buy peacock feathers' for row in rows),
-            'New to-do item did not appear in table'
-        )
+        self.check_for_row_in_list_table('1: Buy peacock feathers')
 
         # 此時仍然有一個文字方塊，讓她可以加入另一個項目
         # 她輸入 "使用孔雀羽毛來製作一隻蒼蠅" (Edith 非常有條理)
-        self.fail('Finish the test!')
+        input_box = self.browser.find_element_by_id('new_item')
+        input_box.send_keys('Use peacock feathers to make a fly')
+        input_box.send_keys(Keys.ENTER)
+        time.sleep(1)
 
         # 網頁再次更新，現在她的清單有這兩個項目
+        self.check_for_row_in_list_table('1: Buy peacock feathers')
+        self.check_for_row_in_list_table('2: Use peacock feathers to make a fly')
 
         # Edith 不知道網站能否記得她的清單
         # 接著她看到網站產生一個唯一的 URL 給她
         # 網頁有一些文字說明這個效果
+        self.fail('Finish the test!')
 
         # 她前往那個 URL - 她的待辦清單仍然在那裡
 
