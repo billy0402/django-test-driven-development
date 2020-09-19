@@ -8,6 +8,7 @@
 - [Selenium 3.141.0](https://github.com/SeleniumHQ/selenium)
 
 ## [Book](https://www.obeythetestinggoat.com/pages/book.html)
+![Test ALL the things](https://www.obeythetestinggoat.com/book/images/twp2_0401.png)
 
 ## test command
 ```shell script
@@ -20,6 +21,13 @@ $ python functional_tests.py
 # 執行單元測試
 $ python manage.py test
 ```
+
+## TDD 流程
+- 功能測試 (使用者觀點)
+- 單元測試 (程式員觀點)
+- 單元測試/編程週期
+- 重構
+![The TDD process with functional and unit tests](https://www.obeythetestinggoat.com/book/images/twp2_0404.png)
 
 ## 單元測試/編程週期
 1. 在終端機，執行單元測試，並查看它們失敗的原因
