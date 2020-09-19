@@ -16,10 +16,10 @@
 $ python manage.py runserver
 
 # 執行功能測試
-$ python functional_tests.py
+$ python manage.py test functional_tests
 
 # 執行單元測試
-$ python manage.py test
+$ python manage.py test app.todos
 ```
 
 ## TDD 流程
@@ -27,7 +27,7 @@ $ python manage.py test
 - 單元測試 (程式員觀點)
 - 單元測試/編程週期
 - 重構
-![The TDD process with functional and unit tests](https://www.obeythetestinggoat.com/book/images/twp2_0404.png)
+![The TDD process with functional and unit tests](https://www.obeythetestinggoat.com/book/images/twp2_0701.png)
 
 ## 單元測試/編程週期
 1. (紅燈) 編寫失敗的單元測試
@@ -45,3 +45,10 @@ $ python manage.py test
 `不要寫出重複的程式`
 - 重複兩次 >> 可能重構，太早重構
 - 重複三次 >> 必須重構，立即重構
+
+## You ain’t gonna need it! (YAGNI)
+`你不會需要它！`
+```
+永遠在真正需要它們時，才實現它們，
+永遠不要在僅僅預想到需要它們時，就實現它們。
+```

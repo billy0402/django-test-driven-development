@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>To-Do lists</title>
+</head>
+<body>
+<h1>My To-Do list</h1>
+<form method="POST" action="/todos/{{ list.id }}/add_item">
+    {% csrf_token %}
+    <input id="new_item" name="item_text" placeholder="Enter a to-do item"/>
+</form>
+<table id="list_table">
+    {% for item in list.item_set.all %}
+        <tr>
+            <td>{{ forloop.counter }}: {{ item.text }}</td>
+        </tr>
+    {% endfor %}
+</table>
+</body>
+</html>
