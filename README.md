@@ -129,3 +129,33 @@ $ sudo systemctl daemon-reload
 
 $ sudo systemctl enable --now gunicorn-superlists-staging.edu.tw
 ```
+
+## 自動化部署
+```shell
+$ pip install fabric3
+
+$ python -m fabric deploy:host=user@superlists.edu.tw
+
+$ cat ./deploy_tools/nginx.template.conf \
+    | sed "s/DOMAIN/superlists.edu.tw/g" \
+    | sudo tee /etc/nginx/sites-available/superlists.edu.tw
+
+$ sudo ln -s /etc/nginx/sites-available/superlists.edu.tw \
+    /etc/nginx/sites-enabled/superlists.edu.tw
+
+$ sudo systemctl reload nginx
+
+$ cat ./deploy_tools/gunicorn-systemd.template.service \
+    | sed "s/DOMAIN/superlists.edu.tw/g" \
+    | sudo tee /etc/systemd/system/gunicorn-superlists.edu.tw.service
+
+$ sudo systemctl daemon-reload
+
+$ sudo systemctl enable --now gunicorn-superlists.edu.tw
+
+$ git tag LIVE
+$ export TAG=$(date +DEPLOYED-%F/%H%M)
+$ echo $TAG
+$ git tag $TAG
+$ git push origin LIVE $TAG
+```
