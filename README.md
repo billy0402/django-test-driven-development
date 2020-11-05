@@ -52,3 +52,80 @@ $ python manage.py test app.todos
 永遠在真正需要它們時，才實現它們，
 永遠不要在僅僅預想到需要它們時，就實現它們。
 ```
+
+## 測試機部署
+
+### 安裝環境
+```shell
+$ sudo vim /etc/hosts
+127.0.0.1 localhost superlists-staging.edu.tw
+
+$ sudo pacman -S git python python-pipenv
+```
+
+### 安裝專案
+```shell
+$ export SITENAME=superlists-staging.edu.tw
+
+$ echo $SITENAME
+
+$ git clone https://github.com/billy0402/django-test-driven-development.git ~/sites/$SITENAME
+
+$ cd ~/sites/$SITENAME
+
+$ pipenv install 
+
+$ pipenv shell
+
+$ python manage.py migrate --noinput
+
+$ python manage.py runserver
+
+$ STAGING_SERVER=$SITENAME python manage.py test functional_tests --failfast
+```
+
+### [安裝網頁伺服器](https://wiki.archlinux.org/index.php/Nginx)
+```shell
+$ sudo pacman -S nginx
+
+$ systemctl enable --now nginx
+
+$ su -
+
+$ mkdir -p /etc/nginx/sites-available/
+
+$ vim /etc/nginx/sites-available/$SITENAME.conf
+
+$ mkdir -p /etc/nginx/sites-enabled/
+
+$ ln -s /etc/nginx/sites-available/$SITENAME.conf /etc/nginx/sites-enabled/$SITENAME.conf
+
+$ readlink -f $SITENAME.conf
+
+$ vim /etc/nginx/nginx.conf
+include /etc/nginx/sites-enabled/*;
+
+$ systemctl reload nginx
+
+$ nginx -t
+```
+
+### 準生產部署
+```shell
+$ python manage.py collectstatic --noinput
+
+$ gunicorn core.wsgi:application
+
+$ set -a; source .env; set +a
+
+$ gunicorn core.wsgi:application --bind unix:/tmp/$SITENAME.socket
+```
+
+### 開機時啟動
+```shell
+$ sudo vim /etc/systemd/system/gunicorn-superlists-staging.edu.tw.service
+
+$ sudo systemctl daemon-reload
+
+$ sudo systemctl enable --now gunicorn-superlists-staging.edu.tw
+```
